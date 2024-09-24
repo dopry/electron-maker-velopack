@@ -14,6 +14,7 @@
   "author": "Edwin Steiner",
   "license": "MIT",
   "dependencies": {
-    "@electron-forge/maker-base": "^7.5.0"
+    "@electron-forge/maker-base": "^7.5.0",
+    "@electron-forge/shared-types": "^7.5.0"
   }
 }
