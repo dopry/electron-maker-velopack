@@ -1,20 +1,21 @@
 {
-  "name": "electron-maker-velopack",
-  "version": "0.0.1",
-  "description": "Maker for @electron-forge that uses velopack to package an application.",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "keywords": [
-    "electron-forge",
-    "maker",
-    "velopack"
-  ],
-  "author": "Edwin Steiner",
-  "license": "MIT",
-  "dependencies": {
-    "@electron-forge/maker-base": "^7.5.0",
-    "@electron-forge/shared-types": "^7.5.0"
-  }
+    "name": "electron-maker-velopack",
+    "version": "0.0.1",
+    "description": "Maker for @electron-forge that uses velopack to package an application.",
+    "main": "index.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "keywords": [
+        "electron-forge",
+        "maker",
+        "velopack"
+    ],
+    "author": "Edwin Steiner",
+    "license": "MIT",
+    "dependencies": {
+        "@electron-forge/maker-base": "^7.5.0",
+        "@electron-forge/shared-types": "^7.5.0",
+        "velopack": "^0.0.89"
+    }
 }
