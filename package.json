@@ -12,5 +12,8 @@
     "velopack"
   ],
   "author": "Edwin Steiner",
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "@electron-forge/maker-base": "^7.5.0"
+  }
 }
