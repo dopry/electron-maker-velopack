@@ -2,8 +2,7 @@ import { MakerBase, MakerOptions } from '@electron-forge/maker-base';
 import { ForgePlatform } from '@electron-forge/shared-types';
 import pathlib from 'path';
 
-export type MakerVelopackConfig = {
-}
+export type MakerVelopackConfig = object;
 
 export default class MakerVelopack extends MakerBase<MakerVelopackConfig> {
     name = 'velopack';
@@ -22,7 +21,7 @@ export default class MakerVelopack extends MakerBase<MakerVelopackConfig> {
         return true;
     }
 
-    async make({ dir, makeDir, targetArch, packageJSON, appName, forgeConfig }: MakerOptions): Promise<string[]> {
+    async make({ makeDir, targetArch }: MakerOptions): Promise<string[]> {
         const outPath = pathlib.resolve(makeDir, `velopack/${targetArch}`);
         await this.ensureDirectory(outPath);
 
