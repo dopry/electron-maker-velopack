@@ -55,6 +55,7 @@ The maker configuration has the following declaration:
         packVersion?: string,
         packAuthors?: string,
         packTitle?: string,
+        shortcuts?: string[],
         noInstaller?: boolean,
         noPortable?: boolean,
         vpkExtraArguments?: string[],
@@ -77,6 +78,8 @@ The package id string to pass to the `--packId` argument of `vpk`. This must be 
 only alphanumeric characters, underscores, dashes, and dots). Defaults to the app name, with characters
 not valid in nupkg IDs replaced by underscores.
 
+This value is used for the `<id>` of the generated nupkg.
+
 ### packVersion
 
 The version string to pass to the `--packVersion` argument of `vpk`. Defaults to `appVersion` in
@@ -98,6 +101,17 @@ from the `package.json` data.
 
 A human-friendly name of the applicaton to pass to the `--packTitle` argument of `vpk`. Defaults
 to `packagerConfig.name`, or `productName` from `package.json`, or the app name.
+
+This value is used for both the `<title>` and the `<description>` of the generated nupkg.
+
+### shortcuts
+
+An array of strings specifying which shortcuts the installer should create. The values are passed
+to the `--shortcuts` argument of `vpk`, separated by commas.
+
+To create a shortcut in the top-level of the start menu, include `"StartMenuRoot"`.
+
+To create a Desktop shortcut, include `"Desktop"`.
 
 ### noInstaller
 

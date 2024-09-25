@@ -11,6 +11,7 @@ export type MakerVelopackConfig = {
     packVersion?: string,
     packAuthors?: string,
     packTitle?: string,
+    shortcuts?: string[],
     noInstaller?: boolean,
     noPortable?: boolean,
     vpkExtraArguments?: string[],
@@ -131,13 +132,15 @@ to make changes in PATH effective.)
                           "--signTemplate", XXX,
                           "--signSkipDll", XXX,
                           "--signParallel", XXX,
-                          "--shortcuts", XXX,
                           "--signParams", XXX,
                           */
                           ];
 
         if (this.config.channel != null)
             vpk_args.push("--channel", this.config.channel);
+
+        if (this.config.shortcuts)
+            vpk_args.push("--shortcuts", this.config.shortcuts.join(","));
 
         if (this.config.noPortable)
             vpk_args.push("--noPortable");
