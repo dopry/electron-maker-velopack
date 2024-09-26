@@ -12,6 +12,7 @@ export type MakerVelopackConfig = {
     icon?: string,
     noInstaller?: boolean,
     noPortable?: boolean,
+    outputDir?: string,
     packAuthors?: string,
     packId?: string,
     packTitle?: string,
@@ -63,6 +64,11 @@ function convertNameToNupkgId(name: string | null): string | null {
     return name.replace(/[^-A-Za-z0-9_.]/g, "_");
 }
 
+function assembleCommandLineForDisplay(program: string, args: string[]): string {
+    const maybe_quoted_args = args.map(arg => arg.match(/\s/) ? '"' + arg + '"' : arg);
+    return [program, ...maybe_quoted_args].join(" ");
+}
+
 export default class MakerVelopack extends MakerBase<MakerVelopackConfig> {
     name = 'velopack';
 
@@ -78,7 +84,7 @@ export default class MakerVelopack extends MakerBase<MakerVelopackConfig> {
         //
         const vpk_program = this.getVpkProgram();
         const vpk_args = ["--help"];
-        const vpk_check_command = [vpk_program, ...vpk_args].join(" ");
+        const vpk_check_command = assembleCommandLineForDisplay(vpk_program, vpk_args);
         try {
             // we 'ignore' stdout to hide normal output; stderr remains visible to the user
             execFileSync(vpk_program, vpk_args, { stdio: ['inherit', 'ignore', 'inherit'] });
@@ -105,8 +111,14 @@ to make changes in PATH effective.)
     async make({ appName, dir, makeDir, targetPlatform, targetArch, packageJSON, forgeConfig }: MakerOptions): Promise<string[]> {
         this.checkVpkProgramAvailable();
 
-        const outPath = path.resolve(makeDir, `velopack/${targetPlatform}/${targetArch}`);
-        await this.ensureDirectory(outPath);
+        let outPath = this.config.outputDir;
+        if (outPath == null) {
+             outPath = path.resolve(makeDir, `velopack/${targetPlatform}/${targetArch}`);
+             await this.ensureDirectory(outPath);
+        }
+        else {
+            outPath = path.resolve(outPath);
+        }
 
         const exe_name = `${forgeConfig.packagerConfig.executableName || appName}.exe`; // XXX Windows-specific
         const exe_path = path.join(dir, exe_name);
@@ -199,13 +211,13 @@ to make changes in PATH effective.)
         if (this.config.vpkExtraArguments)
             vpk_args.push(...this.config.vpkExtraArguments);
 
-        const vpk_command = [vpk_program, ...vpk_args].join(" ");
+        const vpk_command = assembleCommandLineForDisplay(vpk_program, vpk_args);
 
         try {
             console.log("Running " + vpk_command);
             // inherit stdio to allow interactive input/output of vpk
             // That is also why we have to use the ...Sync function here.
-            execFileSync(vpk_program, vpk_args, { stdio: ['inherit', 'inherit', 'pipe'] });
+            execFileSync(vpk_program, vpk_args, { stdio: ['inherit', 'inherit', 'inherit'] });
         }
         catch (error) {
             throw new Error(`Could not create velopack package.\nFailed command: ${vpk_command}\n\n${error.stderr ?? error}\n`);

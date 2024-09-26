@@ -59,6 +59,7 @@ The maker configuration has the following declaration:
         icon?: string,
         noInstaller?: boolean,
         noPortable?: boolean,
+        outputDir?: string,
         packAuthors?: string,
         packId?: string,
         packTitle?: string,
@@ -107,6 +108,18 @@ If true, do not build the executable installer. (`--noInst` argument to `vpk`.)
 ### noPortable
 
 If true, do not build the portable installer. (`--noPortable` argument to `vpk`.)
+
+### outputDir
+
+The directory into which `vpk` should put the newly built packages, to pass to the `--outputDir` argument of `vpk`.
+
+If this is not given, an empty directory will be created as `velopack/${targetPlatform}/${targetArch}` under the
+under the Electron Forge `out/make` directory and passed to `vpk` as the `--outputDir`.
+In this case, the `delta` configuration option has no effect since `vpk` will not find any previously built packages
+in this directory.
+
+If this option is specified, the given directory will *not* be cleared. Existing files will be kept in order to
+allow `pkg` to built delta packages with respect to earlier versions.
 
 ### packAuthors
 
