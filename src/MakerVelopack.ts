@@ -41,7 +41,10 @@ const default_vpk_program = "vpk";
  * @see {@link https://semver.org/ | Semantic Versioning specification}
  * @see {@link https://learn.microsoft.com/en-us/nuget/concepts/package-versioning?tabs=semver20sort | NuGet versioning specification}
  */
-function convertVersion(version: string): string {
+function convertVersion(version: string | null): string | null {
+    if (version == null)
+        return null;
+
     const parts = version.split('+')[0].split('-');
     const mainVersion = parts.shift();
 
@@ -54,7 +57,9 @@ function convertVersion(version: string): string {
 
 // --------------------------------------------------------------
 
-function convertNameToNupkgId(name: string): string {
+function convertNameToNupkgId(name: string | null): string | null {
+    if (name == null)
+        return null;
     return name.replace(/[^-A-Za-z0-9_.]/g, "_");
 }
 
@@ -103,16 +108,19 @@ to make changes in PATH effective.)
         const outPath = path.resolve(makeDir, `velopack/${targetPlatform}/${targetArch}`);
         await this.ensureDirectory(outPath);
 
-        const exe_name = `${forgeConfig.packagerConfig.executableName || appName}.exe`
+        const exe_name = `${forgeConfig.packagerConfig.executableName || appName}.exe`; // XXX Windows-specific
         const exe_path = path.join(dir, exe_name);
 
         if (!await fs.pathExists(exe_path)) {
             throw new Error(`The executable to package does not exist at the expected path: ${exe_path}.`);
         }
 
-        const pack_id = this.config.packId ?? convertNameToNupkgId(appName);
-        const version = this.config.packVersion ?? forgeConfig.packagerConfig.appVersion ?? convertVersion(packageJSON.version as string);
+        // we don't check forgeConfig.packagerConfig.appBundleId, as I think that is MacOS-specific
+        const pack_id = this.config.packId ?? convertNameToNupkgId(forgeConfig.packagerConfig.name) ?? convertNameToNupkgId(appName);
+
+        const version = this.config.packVersion ?? convertVersion(forgeConfig.packagerConfig.appVersion) ?? convertVersion(packageJSON.version as string);
         const title = this.config.packTitle ?? forgeConfig.packagerConfig.name ?? packageJSON.productName ?? appName;
+        const icon = this.config.icon ?? forgeConfig.packagerConfig.icon;
 
         let authors = this.config.packAuthors ?? packageJSON.authors ?? "";
         if (!authors && packageJSON.author) {
@@ -143,8 +151,8 @@ to make changes in PATH effective.)
         if (this.config.framework)
             vpk_args.push("--framework", this.config.framework.join(","));
 
-        if (this.config.icon != null)
-            vpk_args.push("--icon", this.config.icon);
+        if (icon != null)
+            vpk_args.push("--icon", icon);
 
         if (this.config.noInstaller)
             vpk_args.push("--noInst");
@@ -172,6 +180,9 @@ to make changes in PATH effective.)
 
         if (this.config.signParallel != null)
             vpk_args.push("--signParallel", this.config.signParallel.toFixed(0));
+
+        // Note: For the sign options, we could try to get defaults from `windowsSign` or `osxSign` in packagerConfig.
+        //       We don't currently do that.
 
         if (this.config.signParams != null)
             vpk_args.push("--signParams", this.config.signParams);

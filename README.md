@@ -98,6 +98,8 @@ An array of strings to pass to the `--framework` argument of `vpk`, joined by co
 
 The path to an icon file for the installer, to pass to the `--icon` argument of `vpk`.
 
+This defaults to the icon specific in the packager configuration, if any.
+
 ### noInstaller
 
 If true, do not build the executable installer. (`--noInst` argument to `vpk`.)
@@ -114,8 +116,8 @@ from the `package.json` data.
 ### packId
 
 The package id string to pass to the `--packId` argument of `vpk`. This must be a valid nupkg ID (containing
-only alphanumeric characters, underscores, dashes, and dots). Defaults to the app name, with characters
-not valid in nupkg IDs replaced by underscores.
+only alphanumeric characters, underscores, dashes, and dots). Defaults to `name` in the packager configuration
+or the app name, with characters not valid in nupkg IDs replaced by underscores.
 
 This value is used for the `<id>` of the generated nupkg.
 
@@ -128,11 +130,12 @@ This value is used for both the `<title>` and the `<description>` of the generat
 
 ### packVersion
 
-The version string to pass to the `--packVersion` argument of `vpk`. Defaults to `appVersion` in
-the packager configuration, or a conversion of the `version` given in `package.json`.
+The version string to pass to the `--packVersion` argument of `vpk`. Defaults to a conversion of
+`appVersion` in the packager configuration, or of the `version` given in `package.json`.
 
 Note: The conversion of the semantic package version is done to put it in a form compatible
-with the nupkg version format.
+with the nupkg version format. If you specify `packVersion`, its value is used literally, without
+automatic conversion.
 
 See [Semantic Versioning specification](https://semver.org/)
 
