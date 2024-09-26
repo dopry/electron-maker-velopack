@@ -5,16 +5,28 @@ import fs from 'fs-extra';
 import { execFileSync } from 'node:child_process';
 
 export type MakerVelopackConfig = {
-    vpkProgram?: string,
     channel?: string,
-    packId?: string,
-    packVersion?: string,
-    packAuthors?: string,
-    packTitle?: string,
-    shortcuts?: string[],
+    delta?: string,
+    exclude?: string,
+    framework?: string[],
+    icon?: string,
     noInstaller?: boolean,
     noPortable?: boolean,
+    packAuthors?: string,
+    packId?: string,
+    packTitle?: string,
+    packVersion?: string,
+    releaseNotes?: string,
+    runtime?: string,
+    shortcuts?: string[],
+    signParallel?: number,
+    signParams?: string,
+    signSkipDll?: boolean,
+    signTemplate?: string,
+    skipVeloAppCheck?: boolean,
+    splashImage?: string,
     vpkExtraArguments?: string[],
+    vpkProgram?: string,
 };
 
 const default_vpk_program = "vpk";
@@ -98,6 +110,7 @@ to make changes in PATH effective.)
             throw new Error(`The executable to package does not exist at the expected path: ${exe_path}.`);
         }
 
+        const pack_id = this.config.packId ?? convertNameToNupkgId(appName);
         const version = this.config.packVersion ?? forgeConfig.packagerConfig.appVersion ?? convertVersion(packageJSON.version as string);
         const title = this.config.packTitle ?? forgeConfig.packagerConfig.name ?? packageJSON.productName ?? appName;
 
@@ -111,42 +124,66 @@ to make changes in PATH effective.)
         const vpk_program = this.getVpkProgram();
 
         const vpk_args = ["pack",
-                          "--packId", this.config.packId ?? convertNameToNupkgId(appName),
+                          "--packId", pack_id,
                           "--packVersion", version,
                           "--packDir", dir,
-                          "--packAuthors", authors,
-                          "--packTitle", title,
-
                           "--mainExe", exe_name,
                           "--outputDir", outPath,
-
-/*
-                          "--runtime", XXX,
-                          "--releaseNotes", XXX,
-                          "--delta", XXX,
-                          "--icon", XXX,
-                          "--exclude", XXX,
-                          "--framework", XXX,
-                          "--splashImage", XXX,
-                          "--skipVeloAppCheck", XXX,
-                          "--signTemplate", XXX,
-                          "--signSkipDll", XXX,
-                          "--signParallel", XXX,
-                          "--signParams", XXX,
-                          */
-                          ];
+                         ];
 
         if (this.config.channel != null)
             vpk_args.push("--channel", this.config.channel);
 
-        if (this.config.shortcuts)
-            vpk_args.push("--shortcuts", this.config.shortcuts.join(","));
+        if (this.config.delta != null)
+            vpk_args.push("--delta", this.config.delta);
+
+        if (this.config.exclude != null)
+            vpk_args.push("--exclude", this.config.exclude);
+
+        if (this.config.framework)
+            vpk_args.push("--framework", this.config.framework.join(","));
+
+        if (this.config.icon != null)
+            vpk_args.push("--icon", this.config.icon);
+
+        if (this.config.noInstaller)
+            vpk_args.push("--noInst");
 
         if (this.config.noPortable)
             vpk_args.push("--noPortable");
 
-        if (this.config.noInstaller)
-            vpk_args.push("--noInst");
+        if (authors != null)
+            vpk_args.push("--packAuthors", authors);
+
+        if (title != null)
+            vpk_args.push("--packTitle", title);
+
+        if (this.config.releaseNotes != null)
+            vpk_args.push("--releaseNotes", this.config.releaseNotes);
+
+        if (this.config.runtime != null)
+            vpk_args.push("--runtime", this.config.runtime);
+
+        if (this.config.shortcuts)
+            vpk_args.push("--shortcuts", this.config.shortcuts.join(","));
+
+        if (this.config.signSkipDll)
+            vpk_args.push("--signSkipDll");
+
+        if (this.config.signParallel != null)
+            vpk_args.push("--signParallel", this.config.signParallel.toFixed(0));
+
+        if (this.config.signParams != null)
+            vpk_args.push("--signParams", this.config.signParams);
+
+        if (this.config.signTemplate != null)
+            vpk_args.push("--signTemplate", this.config.signTemplate);
+
+        if (this.config.skipVeloAppCheck)
+            vpk_args.push("--skipVeloAppCheck");
+
+        if (this.config.splashImage != null)
+            vpk_args.push("--splashImage", this.config.splashImage);
 
         if (this.config.vpkExtraArguments)
             vpk_args.push(...this.config.vpkExtraArguments);
