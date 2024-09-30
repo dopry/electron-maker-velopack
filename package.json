@@ -18,8 +18,7 @@
     "license": "MIT",
     "dependencies": {
         "@electron-forge/maker-base": "^7.5.0",
-        "@electron-forge/shared-types": "^7.5.0",
-        "fs-extra": "^11.2.0"
+        "@electron-forge/shared-types": "^7.5.0"
     },
     "files": [
         "dist",
@@ -27,7 +26,6 @@
     ],
     "devDependencies": {
         "@eslint/js": "^9.11.1",
-        "@types/fs-extra": "^11.0.4",
         "eslint": "^9.11.1",
         "globals": "^15.9.0",
         "rxjs": "^7.8.1",

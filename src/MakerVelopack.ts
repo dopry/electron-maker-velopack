@@ -1,7 +1,7 @@
 import { MakerBase, MakerOptions } from '@electron-forge/maker-base';
 import { ForgePlatform } from '@electron-forge/shared-types';
 import path from 'path';
-import fs from 'fs-extra';
+import fs from 'node:fs';
 import { execFileSync } from 'node:child_process';
 
 export type MakerVelopackConfig = {
@@ -121,11 +121,15 @@ to make changes in PATH effective.)
             outPath = path.resolve(outPath);
         }
 
-        const exe_name = `${forgeConfig.packagerConfig.executableName || appName}.exe`; // XXX Windows-specific
+        const exe_extension = targetPlatform === "win32" ? ".exe" : "";
+        const exe_name = `${forgeConfig.packagerConfig.executableName || appName}${exe_extension}`;
         const exe_path = path.join(dir, exe_name);
 
-        if (!await fs.pathExists(exe_path)) {
-            throw new Error(`The executable to package does not exist at the expected path: ${exe_path}.`);
+        try {
+            await fs.promises.access(exe_path);
+        }
+        catch (error) {
+            throw new Error(`The executable file to package does not exist at the expected path: ${exe_path}.\n${error}`);
         }
 
         // we don't check forgeConfig.packagerConfig.appBundleId, as I think that is MacOS-specific
@@ -215,7 +219,6 @@ to make changes in PATH effective.)
         const vpk_command = assembleCommandLineForDisplay(vpk_program, vpk_args);
 
         try {
-            console.log("Running " + vpk_command);
             // If interaction is wanted, inherit stdio to allow interactive input/output of vpk.
             // That is also why we have to use the ...Sync function here.
             execFileSync(vpk_program, vpk_args, { stdio: this.config.allowInteraction ? "inherit" : "pipe" });
