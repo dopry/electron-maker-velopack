@@ -5,6 +5,8 @@ distribution packages for an application.
 
 For *velopack* docs, see https://docs.velopack.io .
 
+For *Electron Forge* docs, see https://www.electronforge.io .
+
 ## Status
 
 This maker is in very early development. It works for my purposes
