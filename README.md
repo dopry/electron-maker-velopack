@@ -20,6 +20,15 @@ Signing packages, in particular, is untested.
 The maker requires the command line tool `vpk` to be available on the path
 and will fail with a corresponding error message otherwise.
 
+Once you have a .NET SDK installed, you should be able to install the `vpk`
+command line tool by running:
+
+    dotnet tool update -g vpk
+
+Note that after the initial installation of the .NET SDK, you may have to
+exit and re-enter your command interpreter sessions in order to make addition
+of the .NET tools to your PATH variable effective.
+
 The maker will try to run on any platform, but so far it has been tested only
 on Windows.
 
