@@ -97,6 +97,9 @@ The release channel to pass to the `--channel` argument of `vpk`. (Otherwise, `v
 The delta generation mode to pass to the `--delta` argument of `vpk`. This can be `"BestSize"`, `"BestSpeed"`, or `"None"`.
 (Otherwise, `vpk` defaults to the "BestSpeed" mode.)
 
+Note that delta packages will only be generated if an explicit `outputDir` is given in the maker configuration
+(see below) and this directory contains the previous package(s) to compute deltas against.
+
 ### exclude
 
 A regex for excluding matching files from the package, to pass to the `--exclude` argument of `vpk`.
