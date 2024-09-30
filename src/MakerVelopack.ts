@@ -33,7 +33,12 @@ export type MakerVelopackConfig = {
 
 const default_vpk_program = "vpk";
 
-// --------------------------------------------------------------
+// --- BEGIN code from electron-winstaller ----------------------
+
+// The following code (up to the END marker below) is from the
+// electron-winstaller package and has the following copyright notice:
+//
+//     Copyright (c) 2015 GitHub Inc.
 
 /**
  * A utility function to convert SemVer version strings into NuGet-compatible
@@ -57,7 +62,7 @@ function convertVersion(version: string | null): string | null {
     }
 }
 
-// --------------------------------------------------------------
+// --- END of code from electron-winstaller ---------------------
 
 function convertNameToNupkgId(name: string | null): string | null {
     if (name == null)
