@@ -52,6 +52,7 @@ derived defaults.
 The maker configuration has the following declaration:
 
     export type MakerVelopackConfig = {
+        allowInteraction?: boolean,
         channel?: string,
         delta?: string,
         exclude?: string,
@@ -76,6 +77,16 @@ The maker configuration has the following declaration:
         vpkExtraArguments?: string[],
         vpkProgram?: string,
     };
+
+### allowInteraction
+
+If true, run `vpk` with stdio handles inherited from the parent process, in order to allow the user to interact with `vpk`.
+(For example for confirming the overwriting of an existing release. If this is not given, `vpk` will automatically fail
+in such cases.)
+
+Enabling this has the downside that error reporting may be subpar because stdout/stderr output from `vpk` may be swallowed
+by the Electron Forge build process in case of an error. If the `vpk` command fails without any visible error message,
+try disabling this option.
 
 ### channel
 

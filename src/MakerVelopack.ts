@@ -5,6 +5,7 @@ import fs from 'fs-extra';
 import { execFileSync } from 'node:child_process';
 
 export type MakerVelopackConfig = {
+    allowInteraction?: boolean,
     channel?: string,
     delta?: string,
     exclude?: string,
@@ -215,12 +216,12 @@ to make changes in PATH effective.)
 
         try {
             console.log("Running " + vpk_command);
-            // inherit stdio to allow interactive input/output of vpk
+            // If interaction is wanted, inherit stdio to allow interactive input/output of vpk.
             // That is also why we have to use the ...Sync function here.
-            execFileSync(vpk_program, vpk_args, { stdio: ['inherit', 'inherit', 'inherit'] });
+            execFileSync(vpk_program, vpk_args, { stdio: this.config.allowInteraction ? "inherit" : "pipe" });
         }
         catch (error) {
-            throw new Error(`Could not create velopack package.\nFailed command: ${vpk_command}\n\n${error.stderr ?? error}\n`);
+            throw new Error(`Could not create velopack package.\nFailed command: ${vpk_command}\n\n${error.stdout}\n\n${error.stderr ?? error}\n`);
         }
 
         const artifacts = [
