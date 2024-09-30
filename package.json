@@ -1,6 +1,6 @@
 {
     "name": "electron-maker-velopack",
-    "version": "0.0.1",
+    "version": "1.0.0",
     "description": "Maker for @electron-forge that uses velopack to package an application.",
     "main": "dist/MakerVelopack.js",
     "scripts": {
