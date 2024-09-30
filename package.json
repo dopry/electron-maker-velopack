@@ -2,6 +2,7 @@
     "name": "electron-maker-velopack",
     "version": "1.0.0",
     "description": "Maker for @electron-forge that uses velopack to package an application.",
+    "repository": "github:edwinst/electron-maker-velopack",
     "main": "dist/MakerVelopack.js",
     "scripts": {
         "build": "tsc --build",
