@@ -18,7 +18,11 @@ const path_1 = __importDefault(require("path"));
 const node_fs_1 = __importDefault(require("node:fs"));
 const node_child_process_1 = require("node:child_process");
 const default_vpk_program = "vpk";
-// --------------------------------------------------------------
+// --- BEGIN code from electron-winstaller ----------------------
+// The following code (up to the END marker below) is from the
+// electron-winstaller package and has the following copyright notice:
+//
+//     Copyright (c) 2015 GitHub Inc.
 /**
  * A utility function to convert SemVer version strings into NuGet-compatible
  * version strings.
@@ -39,7 +43,7 @@ function convertVersion(version) {
         return mainVersion;
     }
 }
-// --------------------------------------------------------------
+// --- END of code from electron-winstaller ---------------------
 function convertNameToNupkgId(name) {
     if (name == null)
         return null;
@@ -169,7 +173,6 @@ to make changes in PATH effective.)
                 vpk_args.push(...this.config.vpkExtraArguments);
             const vpk_command = assembleCommandLineForDisplay(vpk_program, vpk_args);
             try {
-                console.log("Running " + vpk_command);
                 // If interaction is wanted, inherit stdio to allow interactive input/output of vpk.
                 // That is also why we have to use the ...Sync function here.
                 (0, node_child_process_1.execFileSync)(vpk_program, vpk_args, { stdio: this.config.allowInteraction ? "inherit" : "pipe" });

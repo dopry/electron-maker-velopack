@@ -13,7 +13,9 @@
     "keywords": [
         "electron-forge",
         "maker",
-        "velopack"
+        "velopack",
+        "distribution",
+        "installer"
     ],
     "author": "Edwin Steiner",
     "license": "MIT",
