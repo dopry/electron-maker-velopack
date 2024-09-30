@@ -140,7 +140,7 @@ An array of strings to pass to the `--framework` argument of `vpk`, joined by co
 
 The path to an icon file for the installer, to pass to the `--icon` argument of `vpk`.
 
-This defaults to the icon specific in the packager configuration, if any.
+This defaults to the icon specified in the packager configuration, if any.
 
 ### noInstaller
 
@@ -154,7 +154,7 @@ If true, do not build the portable installer. (`--noPortable` argument to `vpk`.
 
 The directory into which `vpk` should put the newly built packages, to pass to the `--outputDir` argument of `vpk`.
 
-If this is not given, an empty directory will be created as `velopack/${targetPlatform}/${targetArch}` under the
+If this is not given, an empty directory will be created as `velopack/${targetPlatform}/${targetArch}`
 under the Electron Forge `out/make` directory and passed to `vpk` as the `--outputDir`.
 In this case, the `delta` configuration option has no effect since `vpk` will not find any previously built packages
 in this directory.
