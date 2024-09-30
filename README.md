@@ -229,6 +229,15 @@ The velopack command line tool to run. Defaults to `vpk`, which is expected to b
 The maker will execute the given program first with only the `--help` argument, in order
 to check whether the program is available.
 
+## Limitations and Known Bugs
+
+### Return value of the `make` method
+
+The maker currently only returns the path of the `RELEASES` file as a generated artifact.
+
+This is mostly because I am not yet sure how to handle pre-existing files in `outputDir`
+and delta package generation with respect to the returned artifact paths.
+
 ## License
 
 This package is published under the MIT license. See the file `LICENSE` for details.
